@@ -16,6 +16,7 @@
     "flux": "^2.1.1",
     "history": "^1.17.0",
     "react": "^0.14.6",
+    "react-cookie": "^0.4.8",
     "react-dom": "^0.14.6",
     "react-redux": "^4.4.5",
     "react-router": "^1.0.3",
