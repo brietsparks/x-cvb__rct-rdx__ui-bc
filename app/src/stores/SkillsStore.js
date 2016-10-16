@@ -2,10 +2,10 @@ import { EventEmitter } from "events";
 
 import dispatcher from "../dispatcher";
 
-class ToolsStore extends EventEmitter {
+class SkillsStore extends EventEmitter {
     constructor() {
         super();
-        this.tools = [
+        this.skills = [
             {
                 id: 1,
                 title: 'Linux'
@@ -27,7 +27,7 @@ class ToolsStore extends EventEmitter {
 
     create(title) {
         const id = Date.now();
-        this.tools.push({
+        this.skills.push({
             id,
             title
         });
@@ -36,18 +36,18 @@ class ToolsStore extends EventEmitter {
     }
 
     getAll() {
-        return this.tools;
+        return this.skills;
     }
 
     handleActions(action) {
         switch (action.type) {
-            case "CREATE_TOOL":
+            case "CREATE_SKILL":
                 this.create(action.title);
         }
     }
 }
 
-const toolsStore = new ToolsStore();
-dispatcher.register(toolsStore.handleActions.bind(toolsStore));
+const skillsStore = new SkillsStore();
+dispatcher.register(skillsStore.handleActions.bind(skillsStore));
 window.dispatcher = dispatcher;
-export default toolsStore;
+export default skillsStore;

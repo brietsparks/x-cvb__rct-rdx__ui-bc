@@ -1,6 +1,6 @@
 import React from "react";
 
-import Tools from "./tags/Tools";
+import Skills from "./tags/Skills";
 import References from "./tags/References";
 
 export default class Tags extends React.Component {
@@ -8,8 +8,7 @@ export default class Tags extends React.Component {
         return (
             <div>
                 <h2>Tags</h2>
-                <Tools/>
-                <References/>
+                <Skills/>
             </div>
         );
     }

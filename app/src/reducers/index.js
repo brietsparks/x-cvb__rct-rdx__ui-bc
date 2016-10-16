@@ -1,9 +1,9 @@
 import { combineReducers } from "redux"
 
-import tools from "./toolsReducer"
+import skills from "./skillsReducer"
 // import references from "./referencesReducer"
 
 export default combineReducers({
-    tools,
+    skills,
     // references,
 })
