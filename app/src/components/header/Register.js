@@ -5,9 +5,7 @@ import { connect } from "react-redux"
 import { registerUser } from "../../actions/authActions";
 
 @connect((store) => {
-    return {
-
-    };
+    return { };
 })
 export default class Register extends React.Component {
     registerUser(e) {
@@ -29,7 +27,7 @@ export default class Register extends React.Component {
                     <label>Password</label>
                     <input ref="password" type="password" />
 
-                    <input type="submit" />
+                    <input type="submit" value="Register"/>
                 </form>
             </div>
         )
