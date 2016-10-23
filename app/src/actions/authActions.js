@@ -53,9 +53,8 @@ export function authenticateToken({ token }) {
     return function (dispatch) {
         axios.post(`${AUTH_URL}/authenticate`, { 'api_token': token }).
             then(response => {
-
                 console.log(response.data);
-                // dispatch({ type: AUTH_USER, payload: response.data });
+                dispatch({ type: AUTH_USER, payload: response.data });
             })
             .catch(error => {
 

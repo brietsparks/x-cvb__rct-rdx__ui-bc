@@ -7,17 +7,11 @@ import { loginUser, authenticateToken } from "../../actions/authActions";
 
 @connect((store) => {
     return {
+        authenticated: store.auth.authenticated,
         message: store.auth.message
     };
 })
 export default class Login extends React.Component {
-    componentDidMount() {
-        if (cookie.load('token')) {
-            const token = cookie.load('token');
-            this.props.dispatch(authenticateToken({token}));
-        }
-    }
-
     loginUser(e) {
         e.preventDefault();
         const email = this.refs.email.value;
@@ -27,6 +21,11 @@ export default class Login extends React.Component {
     }
 
     render() {
+        if (!this.props.authenticated && cookie.load('token')) {
+            const token = cookie.load('token');
+            this.props.dispatch(authenticateToken({token}));
+        }
+
         if (this.props.message) {
             var messageElement =  <p>{ this.props.message }</p>;
         }
