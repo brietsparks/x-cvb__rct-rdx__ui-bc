@@ -51,8 +51,8 @@ export function logoutUser() {
 
 export function authenticateToken({ token }) {
     return function (dispatch) {
-        axios.post(`${AUTH_URL}/authenticate`, { 'api_token': token }).
-            then(response => {
+        axios.post(`${AUTH_URL}/authenticate`, { }, { Authorization: 'Bearer ' + token })
+            .then(response => {
                 console.log(response.data);
                 dispatch({ type: AUTH_USER, payload: response.data });
             })
