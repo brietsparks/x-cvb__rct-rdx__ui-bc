@@ -13,7 +13,6 @@ import { logoutUser } from "../../actions/authActions";
     };
 })
 export default class Auth extends React.Component {
-
     logout(e) {
         this.props.dispatch(logoutUser());
     }

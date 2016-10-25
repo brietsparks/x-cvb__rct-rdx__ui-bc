@@ -2,39 +2,45 @@ import axios from "axios";
 
 import cookie from 'react-cookie';
 import {
-    AUTH_USER,
-    AUTH_FAILURE,
+    AUTH_LOGIN,
+    AUTH_LOGIN_SUCCESS,
+    AUTH_LOGIN_FAILURE,
     AUTH_ERROR,
-    UNAUTH_USER,
+    AUTH_LOGOUT,
     PROTECTED_TEST } from './types';
 
 const AUTH_URL = "http://localhost/resume-builder/public/api/auth";
 
 export function loginUser({ email, password }) {
     return function(dispatch) {
-        axios.post(`${AUTH_URL}/login`, { email, password })
+
+        dispatch({ type: AUTH_LOGIN });
+
+        return axios.post(`${AUTH_URL}/login`, { email, password })
             .then(response => {
-                console.log(response);
+                // console.log(response);
                 if(response.data) {
                     cookie.save('token', response.data.api_token, { path: '/' });
-                    dispatch({ type: AUTH_USER, payload: response.data });
+                    dispatch({ type: AUTH_LOGIN_SUCCESS, payload: response.data });
                 } else {
-                    dispatch({ type: AUTH_FAILURE })
+                    dispatch({ type: AUTH_LOGIN_FAILURE })
                 }
             })
             .catch((error) => {
                 errorHandler(dispatch, error.response, AUTH_ERROR)
             });
     }
+
+
 }
 
 export function registerUser({ email, password }) {
     return function(dispatch) {
         axios.post(`${AUTH_URL}/register`, { email, password })
             .then(response => {
-                console.log(response);
+                // console.log(response);
                 cookie.save('token', response.data.api_token, { path: '/' });
-                dispatch({ type: AUTH_USER, payload: response.data });
+                dispatch({ type: AUTH_LOGIN_SUCCESS, payload: response.data });
             })
             .catch((error) => {
                 errorHandler(dispatch, error.response, AUTH_ERROR)
@@ -44,7 +50,7 @@ export function registerUser({ email, password }) {
 
 export function logoutUser() {
     return function (dispatch) {
-        dispatch({ type: UNAUTH_USER });
+        dispatch({ type: AUTH_LOGOUT });
         cookie.remove('token', { path: '/' });
     }
 }
@@ -53,8 +59,8 @@ export function authenticateToken({ token }) {
     return function (dispatch) {
         axios.post(`${AUTH_URL}/authenticate`, { }, { Authorization: 'Bearer ' + token })
             .then(response => {
-                console.log(response.data);
-                dispatch({ type: AUTH_USER, payload: response.data });
+                // console.log(response.data);
+                dispatch({ type: AUTH_LOGIN_SUCCESS, payload: response.data });
             })
             .catch(error => {
 

@@ -1,7 +1,24 @@
-export const AUTH_USER = 'auth_user',
-            AUTH_FAILURE = 'auth_failure',
-            UNAUTH_USER = 'unauth_user',
-            AUTH_ERROR = 'auth_error',
-            FORGOT_PASSWORD_REQUEST = 'forgot_password_request',
-            RESET_PASSWORD_REQUEST = 'reset_password_request',
-            PROTECTED_TEST = 'protected_test';
+export const
+// auth
+    AUTH_LOGIN = 'auth_login',
+    AUTH_LOGIN_SUCCESS = 'auth_login_success',
+    AUTH_LOGIN_FAILURE = 'auth_login_failure',
+
+    AUTH_LOGOUT = 'auth_logout',
+
+    AUTH_ERROR = 'auth_error',
+    FORGOT_PASSWORD_REQUEST = 'forgot_password_request',
+    RESET_PASSWORD_REQUEST = 'reset_password_request',
+    PROTECTED_TEST = 'protected_test',
+
+
+// skill
+    SKILL_ADD = 'skill_add',
+    SKILL_ADD_SUCCESS = 'skill_add_success',
+    SKILL_ADD_ERROR = 'skill_add_error',
+
+    SKILLS_FETCH = 'skills_fetch',
+    SKILLS_FETCH_SUCCESS = 'skills_fetch_success',
+    SKILLS_FETCH_FAILURE = 'skills_fetch_failure'
+
+;
