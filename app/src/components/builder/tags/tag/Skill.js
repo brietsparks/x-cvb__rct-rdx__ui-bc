@@ -9,12 +9,12 @@ import { connect } from "react-redux"
 //     };
 // })
 
-export default class Skills extends React.Component {
+export default class Skill extends React.Component {
     render() {
         return (
-            <div class="skill">
+            <li class="skill">
                 <p>{this.props.title}</p>
-            </div>
+            </li>
         );
     }
 }

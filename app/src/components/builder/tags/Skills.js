@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 
 import Skill from "./tag/Skill";
 
-import { fetchSkills } from "../../../actions/skillsActions";
+import { fetchSkills, addSkill } from "../../../actions/skillsActions";
 
 // import Tag from "./Tag";
 // import * as SkillActions from "../../../actions/skillsActions";
@@ -18,19 +18,19 @@ import { fetchSkills } from "../../../actions/skillsActions";
 })
 export default class Skills extends React.Component {
     fetchSkills() {
-        console.log(this.props);
         this.props.dispatch(fetchSkills())
     }
 
-    addSkill(title) {
+    addSkill(e) {
+        e.preventDefault();
         this.props.dispatch(addSkill(title))
     }
 
     render() {
         const { skills } = this.props;
-        if (!skills.length) {
-            return <button onClick={this.fetchSkills.bind(this)}>load skills</button>
-        }
+        // if (!skills.length) {
+        //     return <button onClick={this.fetchSkills.bind(this)}>load skills</button>
+        // }
         const mappedSkills = skills.map(skill => <Skill
             key={skill.id}
             {...skill}
@@ -38,8 +38,14 @@ export default class Skills extends React.Component {
         return (
             <div>
                 <h3>Skills</h3>
-                <input type="text" id="add_skill_input"/><button id="add_skill_btn">Add</button>
-                <ul>{mappedSkills}</ul>
+                <form onSubmit={this.addSkill.bind(this)}>
+                    <label>Add Skill: </label>
+                    <input ref="newSkill" type="text" />
+                    <input type="submit" value="Add"/>
+                </form>
+                <ul>
+                    {mappedSkills}
+                </ul>
             </div>
         );
     }

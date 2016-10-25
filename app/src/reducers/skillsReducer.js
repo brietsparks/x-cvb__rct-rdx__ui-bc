@@ -1,3 +1,9 @@
+import {
+    SKILL_ADD,
+    SKILL_ADD_SUCCESSFUL,
+
+} from '../actions/types';
+
 export default function reducer(state={
     skills: [],
     fetching: false,
