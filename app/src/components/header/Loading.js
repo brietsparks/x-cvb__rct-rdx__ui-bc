@@ -27,9 +27,7 @@ export default class Header extends React.Component {
     render() {
         var result = null;
         if (this.busy()) {
-            result = <p>
-                        <strong>Loading...</strong>
-                    </p>
+            result = <p><strong>Loading...</strong></p>
         }
         return result;
     }

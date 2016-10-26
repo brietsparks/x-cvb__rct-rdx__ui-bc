@@ -20,8 +20,12 @@ export default class Login extends React.Component {
         this.props.dispatch(loginUser({email, password}));
     }
 
+    userDidRefresh() {
+        return !this.props.authenticated && cookie.load('token');
+    }
+
     render() {
-        if (!this.props.authenticated && cookie.load('token')) {
+        if (this.userDidRefresh()) {
             const token = cookie.load('token');
             this.props.dispatch(authenticateToken({token}));
         }

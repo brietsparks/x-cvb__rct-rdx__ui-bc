@@ -15,7 +15,7 @@ export const
 // skill
     SKILL_ADD = 'skill_add',
     SKILL_ADD_SUCCESS = 'skill_add_success',
-    SKILL_ADD_ERROR = 'skill_add_error',
+    SKILL_ADD_FAILURE = 'skill_add_error',
 
     SKILLS_FETCH = 'skills_fetch',
     SKILLS_FETCH_SUCCESS = 'skills_fetch_success',
