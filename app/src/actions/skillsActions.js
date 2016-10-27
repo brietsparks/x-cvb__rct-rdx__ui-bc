@@ -33,10 +33,15 @@ export function addSkill(title) {
         axios.post(
             SKILLS_URL,
             {title},
-            getHeaders(getState)
+            {
+                headers: {
+                    Authorization: 'Bearer ' + getState().auth.user.api_token
+                }
+            }
+            // getHeaders(getState())
         ).then(response => {
             console.log(response.data);
-            dispatch({type: 'SKILL_ADD_SUCCESS', payload: response.data})
+            // dispatch({type: 'SKILL_ADD_SUCCESS', payload: response.data})
         }).catch((err) => {
             dispatch({type: "SKILL_ADD_FAILURE", payload: err})
         })

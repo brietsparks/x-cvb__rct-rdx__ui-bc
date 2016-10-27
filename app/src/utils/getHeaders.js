@@ -1,3 +1,3 @@
 export default function getHeaders(state) {
-    return { Authorization: 'Bearer ' + state.user.api_token };
+    return { Authorization: 'Bearer ' + state.auth.user.api_token };
 }

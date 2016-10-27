@@ -23,6 +23,7 @@ export default class Skills extends React.Component {
 
     addSkill(e) {
         e.preventDefault();
+        const title = this.refs.newSkill.value;
         this.props.dispatch(addSkill(title))
     }
 
@@ -38,11 +39,14 @@ export default class Skills extends React.Component {
         return (
             <div>
                 <h3>Skills</h3>
-                <form onSubmit={this.addSkill.bind(this)}>
+                {/*<form onSubmit={this.addSkill.bind(this)}>*/}
                     <label>Add Skill: </label>
                     <input ref="newSkill" type="text" />
-                    <input type="submit" value="Add"/>
-                </form>
+                    <input
+                        onClick={ this.addSkill.bind(this) }
+                        type="submit" value="Add"
+                    />
+                {/*</form>*/}
                 <ul>
                     {mappedSkills}
                 </ul>
