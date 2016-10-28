@@ -13,27 +13,35 @@ import { logoutUser } from "../../actions/authActions";
     };
 })
 export default class Auth extends React.Component {
+    render() {
+        var auth;
+        if (this.props.authenticated) {
+            auth = this.showLogout();
+        } else {
+            auth = this.showLoginRegister();
+        }
+
+        return auth;
+    }
+
     logout(e) {
         this.props.dispatch(logoutUser());
     }
 
-    render() {
-        var auth;
-        if (this.props.authenticated) {
-            auth =  <div>
-                        <p>Logged in as {this.props.user.email}</p>
-                        <a href="#" onClick={this.logout.bind(this)}>Logout</a>
-                    </div>
-        } else {
-            auth =  <div>
-                        <h2>Login</h2>
-                        <Login />
+    showLogout() {
+        return  <div>
+                    <p>Logged in as {this.props.user.email}</p>
+                    <a href="#" onClick={this.logout.bind(this)}>Logout</a>
+                </div>
+    }
 
-                        <h2>Register</h2>
-                        <Register />
-                    </div>;
-        }
+    showLoginRegister() {
+        return  <div>
+                    <h2>Login</h2>
+                    <Login />
 
-        return auth;
+                    <h2>Register</h2>
+                    <Register />
+                </div>;
     }
 }

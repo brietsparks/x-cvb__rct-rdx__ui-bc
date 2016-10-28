@@ -65,7 +65,11 @@ export function authenticateToken({token}) {
         axios.post(
             `${AUTH_URL}/authenticate`,
             {},
-            {Authorization: 'Bearer ' + token}
+            {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            }
         ).then(response => {
             // console.log(response.data);
             dispatch({
