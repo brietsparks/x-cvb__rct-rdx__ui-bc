@@ -1,5 +1,5 @@
 import axios from "axios";
-import getHeaders from "../utils/getHeaders";
+import getBearerToken from "../utils/getBearerToken";
 import {
     SKILL_ADD,
     SKILL_ADD_SUCCESS,
@@ -18,8 +18,13 @@ export function fetchSkills() {
         dispatch({type: SKILLS_FETCH});
         axios.get(
             SKILLS_URL,
-            getHeaders(getState)
+            {
+                headers: {
+                    Authorization: getBearerToken(getState())
+                }
+            }
         ).then((response) => {
+            console.log(response.data);
             dispatch({type: "SKILLS_FETCH_SUCCESS", payload: response.data})
         }).catch((err) => {
             dispatch({type: "SKILLS_FETCH_FAILURE", payload: err})
@@ -35,7 +40,7 @@ export function addSkill(title) {
             {title},
             {
                 headers: {
-                    Authorization: 'Bearer ' + getState().auth.user.api_token
+                    Authorization: getBearerToken(getState())
                 }
             }
             // getHeaders(getState())
