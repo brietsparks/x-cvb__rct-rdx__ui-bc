@@ -48,9 +48,7 @@ export default class Skills extends React.Component {
     }
 
     fetchSkills() {
-        if (this.props.user) {
-            this.props.dispatch(fetchSkills())
-        }
+        this.props.dispatch(fetchSkills())
     }
 
     addSkill(e) {
