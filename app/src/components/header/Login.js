@@ -3,7 +3,7 @@ import React from "react";
 
 import { connect } from "react-redux"
 
-import { loginUser, authenticateToken } from "../../actions/authActions";
+import { loginUser, authenticateToken } from "actions/authActions";
 
 @connect((store) => {
     return {

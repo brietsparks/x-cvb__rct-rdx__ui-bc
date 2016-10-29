@@ -1,5 +1,5 @@
 import axios from "axios";
-import getBearerToken from "../utils/getBearerToken";
+import getBearerToken from "utils/getBearerToken";
 import {
     SKILL_ADD,
     SKILL_ADD_SUCCESS,

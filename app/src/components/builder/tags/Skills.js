@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 
 import Skill from "./tag/Skill";
 
-import { fetchSkills, addSkill } from "../../../actions/skillsActions";
+import { fetchSkills, addSkill } from "actions/skillsActions";
 
 // import Tag from "./Tag";
 // import * as SkillActions from "../../../actions/skillsActions";

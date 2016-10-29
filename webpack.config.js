@@ -28,4 +28,8 @@ module.exports = {
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
   ],
+  resolve: {
+    root: path.resolve('./app/src'),
+    extensions: ['', '.js']
+  }
 };
