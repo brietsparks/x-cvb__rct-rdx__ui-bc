@@ -19,18 +19,13 @@ import { fetchSkills, addSkill } from "actions/skillsActions";
     };
 })
 export default class Skills extends React.Component {
+    componentWillMount() {
+        this.fetchSkills();
+    }
+
     render() {
-        // console.log(this.props.user);
+        const skillElements = this.showSkills();
 
-        var skills = this.fetchSkills();
-
-        // if (!skills.length) {
-        //     return <button onClick={this.fetchSkills.bind(this)}>load skills</button>
-        // }
-        // const mappedSkills = skills.map(skill => <Skill
-        //     key={skill.id}
-        //     {...skill}
-        // />);
         return (
             <div>
                 <h3>Skills</h3>
@@ -40,8 +35,9 @@ export default class Skills extends React.Component {
                     onClick={ this.addSkill.bind(this) }
                     type="submit" value="Add"
                 />
+
                 <ul>
-                    {/*{mappedSkills}*/}
+                    {skillElements}
                 </ul>
             </div>
         );
@@ -51,9 +47,19 @@ export default class Skills extends React.Component {
         this.props.dispatch(fetchSkills())
     }
 
+    showSkills() {
+        const skills = this.props.skills;
+
+        return skills.map(skill => <Skill
+            key={skill.id}
+            {...skill}
+        />);
+    }
+
     addSkill(e) {
         e.preventDefault();
-        const title = this.refs.newSkill.value;
-        this.props.dispatch(addSkill(title))
+        const newSkill = this.refs.newSkill;
+        this.props.dispatch(addSkill(newSkill.value));
+        newSkill.value = "";
     }
 }

@@ -7,7 +7,11 @@ import {
 
     SKILLS_FETCH,
     SKILLS_FETCH_SUCCESS,
-    SKILLS_FETCH_FAILURE
+    SKILLS_FETCH_FAILURE,
+
+    SKILL_DELETE,
+    SKILL_DELETE_SUCCESS,
+    SKILL_DELETE_FAILURE
 
 } from './types';
 
@@ -24,10 +28,10 @@ export function fetchSkills() {
                 }
             }
         ).then((response) => {
-            console.log(response.data);
-            dispatch({type: "SKILLS_FETCH_SUCCESS", payload: response.data})
+            // console.log(response.data);
+            dispatch({type: SKILLS_FETCH_SUCCESS, payload: response.data})
         }).catch((err) => {
-            dispatch({type: "SKILLS_FETCH_FAILURE", payload: err})
+            dispatch({type: SKILLS_FETCH_FAILURE, payload: err})
         })
     }
 }
@@ -43,15 +47,34 @@ export function addSkill(title) {
                     Authorization: getBearerToken(getState())
                 }
             }
-            // getHeaders(getState())
         ).then(response => {
-            console.log(response.data);
-            // dispatch({type: 'SKILL_ADD_SUCCESS', payload: response.data})
+            // console.log(response.data);
+            dispatch({type: SKILL_ADD_SUCCESS, payload: response.data})
         }).catch((err) => {
-            dispatch({type: "SKILL_ADD_FAILURE", payload: err})
+            dispatch({type: SKILL_ADD_FAILURE, payload: err})
         })
     }
 }
+
+export function deleteSkill(id) {
+    return function (dispatch, getState) {
+        dispatch({type: SKILL_DELETE});
+        axios.delete(
+            SKILLS_URL,
+            {id},
+            {
+                headers: {
+                    Authorization: getBearerToken(getState())
+                }
+            }
+        ).then(response => {
+            dispatch({type: SKILL_DELETE_SUCCESS, payload: response.data})
+        }).catch((err) => {
+            dispatch({type: SKILL_DELETE_FAILURE, payload: err})
+        })
+    }
+}
+
 //
 // export function updateSkill(id, text) {
 //     return {

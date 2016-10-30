@@ -19,6 +19,10 @@ export const
 
     SKILLS_FETCH = 'skills_fetch',
     SKILLS_FETCH_SUCCESS = 'skills_fetch_success',
-    SKILLS_FETCH_FAILURE = 'skills_fetch_failure'
+    SKILLS_FETCH_FAILURE = 'skills_fetch_failure',
+
+    SKILL_DELETE = 'skill_delete',
+    SKILL_DELETE_SUCCESS = 'skill_delete_success',
+    SKILL_DELETE_FAILURE = 'skill_delete_failure'
 
 ;
