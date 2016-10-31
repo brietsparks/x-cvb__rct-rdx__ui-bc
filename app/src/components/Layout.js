@@ -1,6 +1,7 @@
 import React from "react";
 
 import Header from "./Header";
+import Exps from "./builder/Exps";
 import Tags from "./builder/Tags";
 
 import { connect } from "react-redux";
@@ -25,7 +26,10 @@ export default class Layout extends React.Component {
 
     showMain() {
         if(this.props.user) {
-            return <Tags />
+            return  <div>
+                        <Tags />
+                        <Exps />
+                    </div>
         }
     }
 }

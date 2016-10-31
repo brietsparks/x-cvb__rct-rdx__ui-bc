@@ -60,15 +60,14 @@ export function deleteSkill(id) {
     return function (dispatch, getState) {
         dispatch({type: SKILL_DELETE});
         axios.delete(
-            SKILLS_URL,
-            {id},
+            SKILLS_URL + '/' + id,
             {
                 headers: {
                     Authorization: getBearerToken(getState())
                 }
             }
         ).then(response => {
-            dispatch({type: SKILL_DELETE_SUCCESS, payload: response.data})
+            dispatch({type: SKILL_DELETE_SUCCESS, payload: id})
         }).catch((err) => {
             dispatch({type: SKILL_DELETE_FAILURE, payload: err})
         })

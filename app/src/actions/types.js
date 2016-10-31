@@ -23,6 +23,10 @@ export const
 
     SKILL_DELETE = 'skill_delete',
     SKILL_DELETE_SUCCESS = 'skill_delete_success',
-    SKILL_DELETE_FAILURE = 'skill_delete_failure'
+    SKILL_DELETE_FAILURE = 'skill_delete_failure',
 
+// exp
+    EXPS_FETCH = 'exps_fetch',
+    EXPS_FETCH_SUCCESS = 'exps_fetch_success',
+    EXPS_FETCH_FAILURE = 'exps_fetch_failure'
 ;

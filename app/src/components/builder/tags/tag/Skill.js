@@ -20,6 +20,7 @@ export default class Skill extends React.Component {
     }
 
     deleteSkill() {
-
+        const id = this.props.id;
+        this.props.dispatch(deleteSkill(id));
     }
 }

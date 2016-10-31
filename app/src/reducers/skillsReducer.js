@@ -10,12 +10,14 @@ import {
     SKILL_DELETE_FAILURE
 } from '../actions/types';
 
-export default function reducer(state={
+const INITIAL_STATE = {
     skills: [],
     fetching: false,
     fetched: false,
-    error: null,
-}, action) {
+    error: null
+};
+
+export default function reducer(state = INITIAL_STATE, action) {
     switch (action.type) {
         case SKILLS_FETCH: {
             return {...state,
@@ -69,12 +71,22 @@ export default function reducer(state={
         }
 
         case SKILL_DELETE_SUCCESS: {
-            console.log(state);
+            const deletedId = action.payload;
+            const newState = {...state};
+            var skills = newState.skills;
+            for (let i = 0; i < skills.length; i++) {
+                if(skills[i].id === deletedId) {
+                    skills = [
+                        ...skills.slice(0, i),
+                        ...skills.slice(i + 1)
+                    ]
+                }
+            }
+
             return {
                 deleting: false,
                 deleted: true,
-                skills: [...state,
-                ]
+                skills: skills
             }
         }
 

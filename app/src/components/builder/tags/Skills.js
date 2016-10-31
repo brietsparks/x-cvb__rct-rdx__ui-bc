@@ -6,11 +6,6 @@ import Skill from "./tag/Skill";
 
 import { fetchSkills, addSkill } from "actions/skillsActions";
 
-// import Tag from "./Tag";
-// import * as SkillActions from "../../../actions/skillsActions";
-// import SkillsStore from "../../../stores/SkillsStore";
-
-
 @connect((store) => {
     return {
         skills: store.skills.skills,
@@ -50,10 +45,12 @@ export default class Skills extends React.Component {
     showSkills() {
         const skills = this.props.skills;
 
-        return skills.map(skill => <Skill
-            key={skill.id}
-            {...skill}
-        />);
+        return skills.map(skill =>
+            <Skill
+                key={skill.id}
+                {...skill}
+            />
+        );
     }
 
     addSkill(e) {
