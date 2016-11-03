@@ -40,8 +40,6 @@ export default class ExpForm extends React.Component {
                     <Field name="explanation" component="textarea"/>
                 </div>
             </form>
-
-
         );
     }
 }

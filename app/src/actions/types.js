@@ -28,5 +28,6 @@ export const
 // exp
     EXPS_FETCH = 'exps_fetch',
     EXPS_FETCH_SUCCESS = 'exps_fetch_success',
-    EXPS_FETCH_FAILURE = 'exps_fetch_failure'
+    EXPS_FETCH_FAILURE = 'exps_fetch_failure',
+    EXP_MODIFY_FIELD = 'exp_modify_field'
 ;

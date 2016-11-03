@@ -21,9 +21,6 @@ export default class Exps extends React.Component {
         const expElems = this.showExps();
         const addExpElem = this.showAddExp();
 
-        console.log('1:');
-        console.log(expElems);
-
         return (
             <div>
                 <h2>Exps</h2>
@@ -45,12 +42,15 @@ export default class Exps extends React.Component {
     showExps() {
         const exps = this.props.exps;
 
-        return exps.map(exp =>
-            <Exp
-                key={exp.id}
-                {...exp}
-            />
-        );
+        if(exps && exps.length > 0) {
+            return exps.map(exp =>
+                <Exp
+                    key={exp.id}
+                    {...exp}
+                />
+            );
+        }
+
     }
 
     showAddExp() {

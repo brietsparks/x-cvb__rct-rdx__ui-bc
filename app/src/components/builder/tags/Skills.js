@@ -10,7 +10,6 @@ import { fetchSkills, addSkill } from "actions/skillsActions";
     return {
         skills: store.skills.skills,
         user: store.auth.user
-
     };
 })
 export default class Skills extends React.Component {
