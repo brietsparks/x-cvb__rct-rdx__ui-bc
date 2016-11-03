@@ -21,6 +21,9 @@ export default class Exps extends React.Component {
         const expElems = this.showExps();
         const addExpElem = this.showAddExp();
 
+        console.log('1:');
+        console.log(expElems);
+
         return (
             <div>
                 <h2>Exps</h2>
