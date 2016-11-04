@@ -9,11 +9,21 @@ import { modifyField } from "actions/expActions";
 })
 export default class Exp extends React.Component {
     handleChange(field, event) {
+        let value;
+
+        switch (event.target.type) {
+            case "checkbox":
+                value = event.target.checked;
+                break;
+            default:
+                value = event.target.value;
+        }
+
         this.props.dispatch(
             modifyField({
                 id:     this.props.id,
                 field:  field,
-                value:  event.target.value
+                value:  value
             })
         );
     }
@@ -46,7 +56,7 @@ export default class Exp extends React.Component {
 
                 <div>
                     <label>Recurring: </label>
-                    <input type="checkbox" value={props.recurring} onChange={this.handleChange.bind(this, 'recurring')}/>
+                    <input type="checkbox" checked={this.parseRecurring(props.recurring)} onChange={this.handleChange.bind(this, 'recurring')}/>
                 </div>
 
                 <div>
@@ -92,5 +102,9 @@ export default class Exp extends React.Component {
                 />
             );
         }
+    }
+
+    parseRecurring(recurring) {
+        return Boolean(Number(recurring));
     }
 }

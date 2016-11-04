@@ -35,16 +35,23 @@ export default function reducer(state = INITIAL_STATE, action) {
         }
         case EXP_MODIFY_FIELD: {
             function recursivelyModify(exps, {id, field, value}) {
+                let changed = false;
                 for(let i = 0; i < exps.length; i++) {
                     const exp = exps[i];
                     const children = exp.children;
                     if (children && children.length > 0) {
-                        recursivelyModify(exp, {id: id, field: field, value: value});
+                        const childrenChanged = recursivelyModify(exp.children, {id: id, field: field, value: value});
+                        if(childrenChanged) {
+                            exp.children = [ ...exp.children ]
+                        }
                     }
                     if (exp.id === id) {
                         exp[field] = value;
+                        changed = true;
                     }
                 }
+
+                return changed;
             }
 
             const newState = { ...state };
@@ -56,6 +63,8 @@ export default function reducer(state = INITIAL_STATE, action) {
             });
 
             newState.exps = [ ...newState.exps ];
+
+            // console.log(newState);
 
             return newState;
         }
