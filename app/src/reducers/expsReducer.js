@@ -42,7 +42,8 @@ export default function reducer(state = INITIAL_STATE, action) {
                     if (children && children.length > 0) {
                         const childrenChanged = recursivelyModify(exp.children, {id: id, field: field, value: value});
                         if(childrenChanged) {
-                            exp.children = [ ...exp.children ]
+                            exp.children = [ ...exp.children ];
+                            changed = true;
                         }
                     }
                     if (exp.id === id) {
@@ -64,7 +65,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 
             newState.exps = [ ...newState.exps ];
 
-            // console.log(newState);
+            console.log(newState);
 
             return newState;
         }

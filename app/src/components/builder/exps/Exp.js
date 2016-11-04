@@ -33,11 +33,10 @@ export default class Exp extends React.Component {
         const children = this.showChildren();
 
         return (
-            <div class="exp">
+            <div class="exp" style={this.expStyle}>
                 {/*<ExpForm onSubmit={this.handleSubmit} />*/}
 
                 <p>Exp</p>
-
 
                 <div>
                     <label>Title: </label>
@@ -76,8 +75,6 @@ export default class Exp extends React.Component {
                 <div class="exp-children">
                     {children}
                 </div>
-
-                <hr/>
             </div>
         );
     }
@@ -93,6 +90,8 @@ export default class Exp extends React.Component {
     showChildren() {
         const exps = this.props.children;
 
+        console.log(exps);
+
         if (exps && exps.length > 0) {
             return exps.map(exp =>
                 <Exp
@@ -107,4 +106,8 @@ export default class Exp extends React.Component {
     parseRecurring(recurring) {
         return Boolean(Number(recurring));
     }
+
+    expStyle = {
+        marginLeft: '30px'
+    };
 }
