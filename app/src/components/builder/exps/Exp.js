@@ -51,11 +51,8 @@ export default class Exp extends React.Component {
                     <input ref="explanation" type="textarea" value={props.explanation} onChange={this.handleChange.bind(this, 'explanation')}/>
                 </div>
 
-                <input
-                    onClick={ this.appendNewChild.bind(this) }
-                    type="submit" value="Add"
-                />
 
+                {this.shoAppendNewChild()}
 
 
                 <div class="exp-children">
@@ -63,6 +60,15 @@ export default class Exp extends React.Component {
                 </div>
             </div>
         );
+    }
+
+    shoAppendNewChild() {
+        if (this.props.id) {
+            return <input
+                onClick={ this.appendNewChild.bind(this) }
+                type="submit" value="Add"
+            />
+        }
     }
 
     handleChange(field, event) {

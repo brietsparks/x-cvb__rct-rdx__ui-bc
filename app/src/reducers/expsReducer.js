@@ -70,7 +70,7 @@ export default function reducer(state = INITIAL_STATE, action) {
                 priority: 0,
                 summary: null,
                 title: null,
-                user_id: null //state.auth.user.id
+                user_id: action.payload.user_id
             });
 
             newState.exps = exps;

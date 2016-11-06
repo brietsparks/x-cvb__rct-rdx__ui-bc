@@ -35,7 +35,8 @@ export function modifyField({ hash, field, value }) {
 }
 
 export function appendNewChildExp({ hash }) {
-    return function (dispatch) {
-        dispatch({type: EXP_APPEND_NEW_CHILD, payload: { hash } })
+    return function (dispatch, getState) {
+        const user_id = getState().auth.user.id;
+        dispatch({type: EXP_APPEND_NEW_CHILD, payload: { hash, user_id } })
     }
 }
