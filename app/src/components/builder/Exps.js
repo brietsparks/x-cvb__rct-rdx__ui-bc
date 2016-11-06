@@ -45,7 +45,7 @@ export default class Exps extends React.Component {
         if(exps && exps.length > 0) {
             return exps.map(exp =>
                 <Exp
-                    key={exp.hash}
+                    key={exp.hashId}
                     {...exp}
                 />
             );

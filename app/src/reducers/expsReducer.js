@@ -43,7 +43,7 @@ export default function reducer(state = INITIAL_STATE, action) {
         case EXP_MODIFY_FIELD: {
             const newState = { ...state };
             const exps = _.cloneDeep(state.exps);
-            const exp = findExp(action.payload.hash, exps);
+            const exp = findExp(action.payload.hashId, exps);
 
             exp[action.payload.field] = action.payload.value;
             newState.exps = exps;
@@ -54,8 +54,8 @@ export default function reducer(state = INITIAL_STATE, action) {
         case EXP_APPEND_NEW_CHILD: {
             const newState = { ...state };
             const exps = _.cloneDeep(state.exps);
-            const hash = action.payload.hash;
-            const parent = findExp(hash, exps);
+            const hashId = action.payload.hashId;
+            const parent = findExp(hashId, exps);
 
             if (!parent.children) {
                 parent.children = [];
@@ -64,7 +64,7 @@ export default function reducer(state = INITIAL_STATE, action) {
             parent.children.unshift( {
                 children: [],
                 explanation: null,
-                hash: tempHash(),
+                hashId: tempHashId(),
                 id: null,
                 parent_id: parent.id,
                 priority: 0,
@@ -84,16 +84,16 @@ export default function reducer(state = INITIAL_STATE, action) {
 
 }
 
-function findExp(hash, exps) {
+function findExp(hashId, exps) {
     let i, exp, result;
     for(i = 0; i < exps.length; i++) {
         exp = exps[i];
-        if (exp.hash === hash) {
+        if (exp.hashId === hashId) {
             return exp;
         }
         const children = exp.children;
         if (children && children.length > 0) {
-            result = findExp(hash, children);
+            result = findExp(hashId, children);
             if (result) {
                 return result;
             }
@@ -102,7 +102,7 @@ function findExp(hash, exps) {
 }
 
 function addHashIds(exp) {
-    exp.hash = hash(String(exp.id));
+    exp.hashId = hash(String(exp.id));
 
     if(exp.children) {
         _.each(exp.children, child => addHashIds(child));
@@ -119,7 +119,7 @@ function hash(str) {
     return hash >>> 0;
 }
 
-function tempHash()
+function tempHashId()
 {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

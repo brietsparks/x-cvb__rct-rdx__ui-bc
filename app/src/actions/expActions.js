@@ -28,15 +28,15 @@ export function fetchExps() {
     }
 }
 
-export function modifyField({ hash, field, value }) {
+export function modifyField({ hashId, field, value }) {
     return function (dispatch) {
-        dispatch({type: EXP_MODIFY_FIELD, payload: { hash, field, value }});
+        dispatch({type: EXP_MODIFY_FIELD, payload: { hashId, field, value }});
     }
 }
 
-export function appendNewChildExp({ hash }) {
+export function appendNewChildExp({ hashId }) {
     return function (dispatch, getState) {
         const user_id = getState().auth.user.id;
-        dispatch({type: EXP_APPEND_NEW_CHILD, payload: { hash, user_id } })
+        dispatch({type: EXP_APPEND_NEW_CHILD, payload: { hashId, user_id } })
     }
 }

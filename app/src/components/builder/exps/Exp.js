@@ -84,7 +84,7 @@ export default class Exp extends React.Component {
 
         this.props.dispatch(
             modifyField({
-                hash:     this.props.hash,
+                hashId:     this.props.hashId,
                 field:  field,
                 value:  value
             })
@@ -92,7 +92,7 @@ export default class Exp extends React.Component {
     }
 
     appendNewChild() {
-        this.props.dispatch( appendNewChildExp({ hash: this.props.hash }) );
+        this.props.dispatch( appendNewChildExp({ hashId: this.props.hashId }) );
     }
 
     showChildren() {
@@ -101,7 +101,7 @@ export default class Exp extends React.Component {
         if (exps && exps.length > 0) {
             return exps.map(exp =>
                 <Exp
-                    key={exp.hash}
+                    key={exp.hashId}
                     dispatch={this.props.dispatch}
                     {...exp}
                 />
