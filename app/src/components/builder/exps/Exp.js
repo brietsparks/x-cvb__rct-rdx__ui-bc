@@ -2,32 +2,15 @@ import React from "react";
 import ExpForm from "./ExpForm";
 
 import { connect } from "react-redux"
-import { modifyField } from "actions/expActions";
+import {
+    modifyField,
+    appendNewChildExp
+} from "actions/expActions";
 
 @connect((store) => {
     return {  };
 })
 export default class Exp extends React.Component {
-    handleChange(field, event) {
-        let value;
-
-        switch (event.target.type) {
-            case "checkbox":
-                value = event.target.checked;
-                break;
-            default:
-                value = event.target.value;
-        }
-
-        this.props.dispatch(
-            modifyField({
-                id:     this.props.id,
-                field:  field,
-                value:  value
-            })
-        );
-    }
-
     render() {
         const props = this.props;
         const children = this.showChildren();
@@ -69,9 +52,12 @@ export default class Exp extends React.Component {
                 </div>
 
                 <input
-                    onClick={ this.addSkill.bind(this) }
+                    onClick={ this.appendNewChild.bind(this) }
                     type="submit" value="Add"
                 />
+
+
+
                 <div class="exp-children">
                     {children}
                 </div>
@@ -79,23 +65,37 @@ export default class Exp extends React.Component {
         );
     }
 
-    addSkill() {
+    handleChange(field, event) {
+        let value;
 
+        switch (event.target.type) {
+            case "checkbox":
+                value = event.target.checked;
+                break;
+            default:
+                value = event.target.value;
+        }
+
+        this.props.dispatch(
+            modifyField({
+                hash:     this.props.hash,
+                field:  field,
+                value:  value
+            })
+        );
     }
 
-    handleSubmit() {
-
+    appendNewChild() {
+        this.props.dispatch( appendNewChildExp({ hash: this.props.hash }) );
     }
 
     showChildren() {
         const exps = this.props.children;
 
-        console.log(exps);
-
         if (exps && exps.length > 0) {
             return exps.map(exp =>
                 <Exp
-                    key={exp.id}
+                    key={exp.hash}
                     dispatch={this.props.dispatch}
                     {...exp}
                 />

@@ -29,5 +29,6 @@ export const
     EXPS_FETCH = 'exps_fetch',
     EXPS_FETCH_SUCCESS = 'exps_fetch_success',
     EXPS_FETCH_FAILURE = 'exps_fetch_failure',
-    EXP_MODIFY_FIELD = 'exp_modify_field'
+    EXP_MODIFY_FIELD = 'exp_modify_field',
+    EXP_APPEND_NEW_CHILD = 'exp_append_new_child'
 ;
