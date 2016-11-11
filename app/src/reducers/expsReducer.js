@@ -3,7 +3,10 @@ import {
     EXPS_FETCH_SUCCESS,
     EXPS_FETCH_FAILURE,
     EXP_MODIFY_FIELD,
-    EXP_APPEND_NEW_CHILD
+    EXP_APPEND_NEW_CHILD,
+    EXP_SAVE,
+    EXP_SAVE_SUCCESS,
+    EXP_SAVE_FAILURE
 } from '../actions/types';
 
 import 'lodash';
@@ -13,6 +16,8 @@ const INITIAL_STATE = {
     fetching: false,
     fetched: false,
     error: null,
+    saving: false,
+    saved: false
 };
 
 export default function reducer(state = INITIAL_STATE, action) {
@@ -51,6 +56,35 @@ export default function reducer(state = INITIAL_STATE, action) {
             return newState;
         }
 
+        case EXP_SAVE: {
+            return { ...state,
+                saving: true,
+                saved: false
+            };
+        }
+
+        case EXP_SAVE_SUCCESS: {
+            const newState = { ...state };
+
+            const exps = _.cloneDeep(state.exps);
+
+            let exp = findExp(action.payload.hashId, exps);
+            exp = { ...action.payload.data };
+
+            newState.exps = exps;
+            newState.saving = false;
+            newState.saved = true;
+
+            return newState;
+        }
+
+        case EXP_SAVE_FAILURE: {
+            return { ...state,
+                saving: false,
+                saved: false
+            };
+        }
+
         case EXP_APPEND_NEW_CHILD: {
             const newState = { ...state };
             const exps = _.cloneDeep(state.exps);
@@ -70,6 +104,7 @@ export default function reducer(state = INITIAL_STATE, action) {
                 priority: 0,
                 summary: null,
                 title: null,
+                type: null,
                 user_id: action.payload.user_id
             });
 

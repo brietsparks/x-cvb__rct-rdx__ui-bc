@@ -5,6 +5,9 @@ import {
     EXPS_FETCH_SUCCESS,
     EXPS_FETCH_FAILURE,
     EXP_MODIFY_FIELD,
+    EXP_SAVE,
+    EXP_SAVE_SUCCESS,
+    EXP_SAVE_FAILURE,
     EXP_APPEND_NEW_CHILD
 } from './types';
 
@@ -33,6 +36,48 @@ export function modifyField({ hashId, field, value }) {
         dispatch({type: EXP_MODIFY_FIELD, payload: { hashId, field, value }});
     }
 }
+
+export function saveExp({ props }) {
+    if (props.id) {
+        return function (dispatch, getState) {
+            dispatch({ type: EXP_SAVE });
+            axios.patch(
+                EXPS_URL + "/" + props.id,
+                props,
+                {
+                    headers: {
+                        Authorization: getBearerToken(getState())
+                    }
+                }
+            ).then(response => {
+                console.log(response.data);
+                dispatch({type: EXP_SAVE_SUCCESS, payload: {...response.data, hashId: props.hashId}})
+            }).catch(err => {
+                dispatch({type: EXP_SAVE_FAILURE, payload: err})
+            })
+        }
+    } else {
+        return function create(dispatch, getState) {
+            dispatch({ type: EXP_SAVE });
+            axios.post(
+                EXPS_URL,
+                props,
+                {
+                    headers: {
+                        Authorization: getBearerToken(getState())
+                    }
+                }
+            ).then(response => {
+                console.log(response.data);
+                dispatch({type: EXP_SAVE_SUCCESS, payload: {...response.data, hashId: props.hashId}})
+            }).catch(err => {
+                dispatch({type: EXP_SAVE_FAILURE, payload: err})
+            })
+        }
+    }
+}
+
+
 
 export function appendNewChildExp({ hashId }) {
     return function (dispatch, getState) {

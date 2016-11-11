@@ -1,8 +1,8 @@
 import React from "react";
-import ExpForm from "./ExpForm";
 
 import { connect } from "react-redux"
 import {
+    saveExp,
     modifyField,
     appendNewChildExp
 } from "actions/expActions";
@@ -17,8 +17,6 @@ export default class Exp extends React.Component {
 
         return (
             <div class="exp" style={this.expStyle}>
-                {/*<ExpForm onSubmit={this.handleSubmit} />*/}
-
                 <p>Exp</p>
 
                 <div>
@@ -28,12 +26,13 @@ export default class Exp extends React.Component {
 
                 <label>Type: </label>
                 <select ref="type" value={props.type} onChange={this.handleChange.bind(this, 'type')}>
-                    <option>Employment</option>
-                    <option>Position</option>
-                    <option>Project</option>
-                    <option>Contribution</option>
-                    <option>Task</option>
-                    <option>Other</option>
+                    <option value=""></option>
+                    <option value="Employment">Employment</option>
+                    <option value="Position">Position</option>
+                    <option value="Project">Project</option>
+                    <option value="Contribution">Contribution</option>
+                    <option value="Task">Task</option>
+                    <option value="Other">Other</option>
                 </select>
 
                 <div>
@@ -51,9 +50,10 @@ export default class Exp extends React.Component {
                     <input ref="explanation" type="textarea" value={props.explanation} onChange={this.handleChange.bind(this, 'explanation')}/>
                 </div>
 
-
-                {this.shoAppendNewChild()}
-
+                <div>
+                    <button onClick={this.save.bind(this)}>Save</button>
+                    {this.showAppendNewChild()}
+                </div>
 
                 <div class="exp-children">
                     {children}
@@ -62,7 +62,11 @@ export default class Exp extends React.Component {
         );
     }
 
-    shoAppendNewChild() {
+    save(e) {
+        this.props.dispatch(saveExp({props: this.props}));
+    }
+
+    showAppendNewChild() {
         if (this.props.id) {
             return <input
                 onClick={ this.appendNewChild.bind(this) }
