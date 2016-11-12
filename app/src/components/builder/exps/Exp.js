@@ -65,7 +65,7 @@ export default class Exp extends React.Component {
     }
 
     save(e) {
-        this.props.dispatch(saveExp({props: this.props}));
+        this.props.dispatch(saveExp({ props: this.props }));
     }
 
     remove(e) {

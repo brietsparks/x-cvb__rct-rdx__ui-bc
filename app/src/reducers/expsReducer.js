@@ -73,9 +73,9 @@ export default function reducer(state = INITIAL_STATE, action) {
             };
 
             const exps = _.cloneDeep(state.exps);
-
             let exp = findExp(action.payload.hashId, exps);
-            exp = { ...action.payload.data };
+
+            exp.id = action.payload.hashId;
 
             newState.exps = exps;
 
@@ -124,7 +124,10 @@ export default function reducer(state = INITIAL_STATE, action) {
         }
 
         case EXP_DELETE_FAILURE: {
-
+            return { ...state,
+                deleting: false,
+                deleted: false
+            };
         }
 
 
@@ -148,7 +151,10 @@ export default function reducer(state = INITIAL_STATE, action) {
                 summary: null,
                 title: null,
                 type: null,
-                user_id: action.payload.user_id
+                updated_at: null,
+                created_at: null,
+                user_id: action.payload.user_id,
+
             });
 
             newState.exps = exps;
