@@ -6,6 +6,9 @@ import {
     EXP_APPEND_NEW_CHILD,
     EXP_SAVE,
     EXP_SAVE_SUCCESS,
+    EXP_DELETE,
+    EXP_DELETE_SUCCESS,
+    EXP_DELETE_FAILURE,
     EXP_SAVE_FAILURE
 } from '../actions/types';
 
@@ -64,7 +67,10 @@ export default function reducer(state = INITIAL_STATE, action) {
         }
 
         case EXP_SAVE_SUCCESS: {
-            const newState = { ...state };
+            const newState = { ...state,
+                saving: false,
+                saved: true
+            };
 
             const exps = _.cloneDeep(state.exps);
 
@@ -72,8 +78,6 @@ export default function reducer(state = INITIAL_STATE, action) {
             exp = { ...action.payload.data };
 
             newState.exps = exps;
-            newState.saving = false;
-            newState.saved = true;
 
             return newState;
         }
@@ -84,6 +88,45 @@ export default function reducer(state = INITIAL_STATE, action) {
                 saved: false
             };
         }
+
+        case EXP_DELETE: {
+            return { ...state,
+                deleting: true,
+                deleted: false
+            };
+        }
+
+        case EXP_DELETE_SUCCESS: {
+            const newState = { ...state,
+                deleting: false,
+                deleted: false
+            };
+
+            const exps = _.cloneDeep(state.exps);
+            const exp = findExp(action.payload.hashId, exps);
+            let parentExps;
+            let index;
+
+            if (exp.parent_id) {
+                parentExps = findExp(exp.parent_id, exps, 'id').children;
+            } else {
+                parentExps = exps;
+            }
+
+            index = parentExps.indexOf(exp);
+            if (index !== -1) {
+                parentExps.splice(index, 1);
+            }
+
+            newState.exps = exps;
+
+            return newState;
+        }
+
+        case EXP_DELETE_FAILURE: {
+
+        }
+
 
         case EXP_APPEND_NEW_CHILD: {
             const newState = { ...state };
@@ -119,16 +162,18 @@ export default function reducer(state = INITIAL_STATE, action) {
 
 }
 
-function findExp(hashId, exps) {
+function findExp(key, exps, keyName) {
+    keyName = keyName || 'hashId';
+
     let i, exp, result;
     for(i = 0; i < exps.length; i++) {
         exp = exps[i];
-        if (exp.hashId === hashId) {
+        if (exp[keyName] === key) {
             return exp;
         }
         const children = exp.children;
         if (children && children.length > 0) {
-            result = findExp(hashId, children);
+            result = findExp(key, children, keyName);
             if (result) {
                 return result;
             }

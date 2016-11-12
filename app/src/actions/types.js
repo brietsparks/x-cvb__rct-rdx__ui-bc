@@ -33,5 +33,8 @@ export const
     EXP_SAVE = 'exp_save',
     EXP_SAVE_SUCCESS = 'exp_save_success',
     EXP_SAVE_FAILURE = 'exp_save_failure',
+    EXP_DELETE = 'exp_delete',
+    EXP_DELETE_SUCCESS = 'exp_delete_success',
+    EXP_DELETE_FAILURE = 'exp_delete_failure',
     EXP_APPEND_NEW_CHILD = 'exp_append_new_child'
 ;

@@ -3,6 +3,7 @@ import React from "react";
 import { connect } from "react-redux"
 import {
     saveExp,
+    deleteExp,
     modifyField,
     appendNewChildExp
 } from "actions/expActions";
@@ -53,6 +54,7 @@ export default class Exp extends React.Component {
                 <div>
                     <button onClick={this.save.bind(this)}>Save</button>
                     {this.showAppendNewChild()}
+                    <button onClick={this.remove.bind(this)}>Delete</button>
                 </div>
 
                 <div class="exp-children">
@@ -64,6 +66,10 @@ export default class Exp extends React.Component {
 
     save(e) {
         this.props.dispatch(saveExp({props: this.props}));
+    }
+
+    remove(e) {
+        this.props.dispatch(deleteExp({ props: this.props }));
     }
 
     showAppendNewChild() {

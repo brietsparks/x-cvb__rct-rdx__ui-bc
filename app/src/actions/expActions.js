@@ -8,6 +8,9 @@ import {
     EXP_SAVE,
     EXP_SAVE_SUCCESS,
     EXP_SAVE_FAILURE,
+    EXP_DELETE,
+    EXP_DELETE_SUCCESS,
+    EXP_DELETE_FAILURE,
     EXP_APPEND_NEW_CHILD
 } from './types';
 
@@ -50,7 +53,6 @@ export function saveExp({ props }) {
                     }
                 }
             ).then(response => {
-                console.log(response.data);
                 dispatch({type: EXP_SAVE_SUCCESS, payload: {...response.data, hashId: props.hashId}})
             }).catch(err => {
                 dispatch({type: EXP_SAVE_FAILURE, payload: err})
@@ -68,7 +70,6 @@ export function saveExp({ props }) {
                     }
                 }
             ).then(response => {
-                console.log(response.data);
                 dispatch({type: EXP_SAVE_SUCCESS, payload: {...response.data, hashId: props.hashId}})
             }).catch(err => {
                 dispatch({type: EXP_SAVE_FAILURE, payload: err})
@@ -77,7 +78,30 @@ export function saveExp({ props }) {
     }
 }
 
+export function deleteExp({ props }) {
+    if (props.id) {
+        return function (dispatch, getState) {
+            dispatch({ type: EXP_DELETE });
+            axios.delete(
+                EXPS_URL + "/" + props.id,
+                {
+                    headers: {
+                        Authorization: getBearerToken(getState())
+                    }
+                }
+            ).then(response => {
+                dispatch({type: EXP_DELETE_SUCCESS, payload: {hashId: props.hashId}})
+            }).catch(err => {
+                dispatch({type: EXP_DELETE_FAILURE, payload: err})
+            })
+        }
+    } else {
+        return function (dispatch) {
+            return dispatch({type: EXP_DELETE_SUCCESS, payload: {hashId: props.hashId}});
+        }
+    }
 
+}
 
 export function appendNewChildExp({ hashId }) {
     return function (dispatch, getState) {
