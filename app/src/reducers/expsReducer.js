@@ -42,6 +42,7 @@ export default function reducer(state = INITIAL_STATE, action) {
                 exps: exps
             }
         }
+
         case EXPS_FETCH_FAILURE: {
             return {...state,
                 fetching: false,
@@ -75,7 +76,8 @@ export default function reducer(state = INITIAL_STATE, action) {
             const exps = _.cloneDeep(state.exps);
             let exp = findExp(action.payload.hashId, exps);
 
-            exp.id = action.payload.hashId;
+            exp.id = action.payload.id;
+            exp.hashId = action.payload.hashId;
 
             newState.exps = exps;
 
@@ -130,23 +132,34 @@ export default function reducer(state = INITIAL_STATE, action) {
             };
         }
 
-
         case EXP_APPEND_NEW_CHILD: {
             const newState = { ...state };
             const exps = _.cloneDeep(state.exps);
-            const hashId = action.payload.hashId;
-            const parent = findExp(hashId, exps);
+            let parent;
+            let children;
+            let parentId;
 
-            if (!parent.children) {
-                parent.children = [];
+            const hashId = action.payload.hashId;
+            if (hashId) {
+                parent = findExp(hashId, exps);
+                if (!parent.children) {
+                    parent.children = [];
+                }
+                children = parent.children;
+                parentId = parent.id;
+            } else {
+                children = exps;
+
             }
 
-            parent.children.unshift( {
+            console.log(parent);
+
+            children.unshift( {
                 children: [],
                 explanation: null,
                 hashId: tempHashId(),
                 id: null,
-                parent_id: parent.id,
+                parent_id: parentId,
                 priority: 0,
                 summary: null,
                 title: null,

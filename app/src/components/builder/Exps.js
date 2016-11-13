@@ -4,7 +4,10 @@ import { connect } from "react-redux"
 
 import Exp from "./exps/Exp";
 
-import { fetchExps } from "actions/expActions";
+import {
+    fetchExps,
+    appendNewChildExp
+} from "actions/expActions";
 
 @connect((store) => {
     return {
@@ -19,18 +22,16 @@ export default class Exps extends React.Component {
 
     render() {
         const expElems = this.showExps();
-        const addExpElem = this.showAddExp();
 
         return (
             <div>
                 <h2>Exps</h2>
-                {addExpElem}
+
+                {this.showAddExp()}
 
                 <div>
                     {expElems}
                 </div>
-
-                {addExpElem}
             </div>
         );
     }
@@ -50,10 +51,16 @@ export default class Exps extends React.Component {
                 />
             );
         }
-
     }
 
     showAddExp() {
+        return <input
+            onClick={ this.addExp.bind(this) }
+            type="submit" value="Add"
+        />
+    }
 
+    addExp() {
+        this.props.dispatch( appendNewChildExp({}) );
     }
 }
