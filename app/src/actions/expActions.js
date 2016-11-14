@@ -13,8 +13,9 @@ import {
     EXP_DELETE_FAILURE,
     EXP_APPEND_NEW_CHILD
 } from './types';
+import { getDomain } from "utils/app";
 
-const EXPS_URL = "http://localhost/resume-builder/public/api/v0/exps";
+const EXPS_URL = getDomain() + "/api/v0/exps";
 
 export function fetchExps() {
     return function (dispatch, getState) {

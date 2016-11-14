@@ -9,8 +9,9 @@ import {
     AUTH_LOGOUT,
     PROTECTED_TEST
 } from './types';
+import { getDomain } from "utils/app";
 
-const AUTH_URL = "http://localhost/resume-builder/public/api/auth";
+const AUTH_URL = getDomain() + "/api/auth";
 
 export function loginUser({email, password}) {
     return function (dispatch) {

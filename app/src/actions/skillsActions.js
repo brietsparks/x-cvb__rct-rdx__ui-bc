@@ -14,8 +14,9 @@ import {
     SKILL_DELETE_FAILURE
 
 } from './types';
+import { getDomain } from "utils/app";
 
-const SKILLS_URL = "http://localhost/resume-builder/public/api/v0/user/skills";
+const SKILLS_URL = getDomain() + "/api/v0/user/skills";
 
 export function fetchSkills() {
     return function (dispatch, getState) {
