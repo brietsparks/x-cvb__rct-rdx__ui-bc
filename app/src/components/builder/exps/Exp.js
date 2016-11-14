@@ -1,5 +1,5 @@
 import React from "react";
-
+import Select from 'react-select';
 import { connect } from "react-redux"
 import {
     saveExp,
@@ -9,11 +9,14 @@ import {
 } from "actions/expActions";
 
 @connect((store) => {
-    return {  };
+    return {
+        skills: store.skills.skills
+    };
 })
 export default class Exp extends React.Component {
     render() {
         const props = this.props;
+        const skills = this.showSkills();
         const children = this.showChildren();
 
         return (
@@ -21,12 +24,12 @@ export default class Exp extends React.Component {
                 <p>Exp</p>
 
                 <div>
-                    <label>Title: </label>
-                    <input ref="title" type="text" value={props.title} onChange={this.handleChange.bind(this, 'title')}/>
+                    <label>Title*: </label>
+                    <input ref="title" type="text" value={props.title} onChange={this.handleInputChange.bind(this, 'title')}/>
                 </div>
 
-                <label>Type: </label>
-                <select ref="type" value={props.type} onChange={this.handleChange.bind(this, 'type')}>
+                <label>Type*: </label>
+                <select ref="type" value={props.type} onChange={this.handleInputChange.bind(this, 'type')}>
                     <option value=""></option>
                     <option value="Employment">Employment</option>
                     <option value="Position">Position</option>
@@ -38,23 +41,32 @@ export default class Exp extends React.Component {
 
                 <div>
                     <label>Recurring: </label>
-                    <input type="checkbox" checked={this.parseRecurring(props.recurring)} onChange={this.handleChange.bind(this, 'recurring')}/>
+                    <input type="checkbox" checked={this.parseRecurring(props.recurring)} onChange={this.handleInputChange.bind(this, 'recurring')}/>
                 </div>
 
                 <div>
                     <label>Short Summary: </label>
-                    <input ref="summary" type="text" value={props.summary} onChange={this.handleChange.bind(this, 'summary')}/>
+                    <input ref="summary" type="text" value={props.summary} onChange={this.handleInputChange.bind(this, 'summary')}/>
                 </div>
 
                 <div>
                     <label>Long Summary: </label>
-                    <input ref="explanation" type="textarea" value={props.explanation} onChange={this.handleChange.bind(this, 'explanation')}/>
+                    <input ref="explanation" type="textarea" value={props.explanation} onChange={this.handleInputChange.bind(this, 'explanation')}/>
+                </div>
+
+
+                <div>
+                    {skills}
                 </div>
 
                 <div>
                     <button onClick={this.save.bind(this)}>Save</button>
                     {this.showAppendNewChild()}
                     <button onClick={this.remove.bind(this)}>Delete</button>
+                </div>
+
+                <div>
+
                 </div>
 
                 <div class="exp-children">
@@ -81,7 +93,11 @@ export default class Exp extends React.Component {
         }
     }
 
-    handleChange(field, event) {
+    appendNewChild() {
+        this.props.dispatch( appendNewChildExp({ hashId: this.props.hashId }) );
+    }
+
+    handleInputChange(field, event) {
         let value;
 
         switch (event.target.type) {
@@ -94,15 +110,37 @@ export default class Exp extends React.Component {
 
         this.props.dispatch(
             modifyField({
-                hashId:     this.props.hashId,
+                hashId: this.props.hashId,
                 field:  field,
                 value:  value
             })
         );
     }
 
-    appendNewChild() {
-        this.props.dispatch( appendNewChildExp({ hashId: this.props.hashId }) );
+    showSkills() {
+        const skills = this.getSkillOptions();
+
+        return <Select
+            name="form-field-name"
+            options={skills}
+            multi={true}
+        />
+    }
+
+    getSkillOptions() {
+        let skillOptions = [];
+        
+        if (this.props.skills) {
+            skillOptions = this.props.skills.map(skill => {
+                return { value: skill.id, label: skill.title}
+            });
+        }
+
+        return skillOptions;
+    }
+
+    handleSkillsSelectChange(event) {
+
     }
 
     showChildren() {
