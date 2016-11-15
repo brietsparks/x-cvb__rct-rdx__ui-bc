@@ -1,6 +1,6 @@
 import React from "react";
 import Select from 'react-select';
-import { connect } from "react-redux"
+import { connect } from "react-redux";
 import {
     saveExp,
     deleteExp,
@@ -9,9 +9,7 @@ import {
 } from "actions/expActions";
 
 @connect((store) => {
-    return {
-        skills: store.skills.skills
-    };
+    return {};
 })
 export default class Exp extends React.Component {
     render() {
@@ -124,14 +122,15 @@ export default class Exp extends React.Component {
             name="form-field-name"
             options={skills}
             multi={true}
+            onChange={this.handleSkillsSelectChange.bind(this)}
         />
     }
 
     getSkillOptions() {
         let skillOptions = [];
         
-        if (this.props.skills) {
-            skillOptions = this.props.skills.map(skill => {
+        if (this.props.userSkills) {
+            skillOptions = this.props.userSkills.map(skill => {
                 return { value: skill.id, label: skill.title}
             });
         }
@@ -139,7 +138,7 @@ export default class Exp extends React.Component {
         return skillOptions;
     }
 
-    handleSkillsSelectChange(event) {
+    handleSkillsSelectChange(skillElement) {
 
     }
 

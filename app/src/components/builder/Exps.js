@@ -12,7 +12,8 @@ import {
 @connect((store) => {
     return {
         exps: store.exps.exps,
-        user: store.auth.user
+        user: store.auth.user,
+        skills: store.skills.skills
     };
 })
 export default class Exps extends React.Component {
@@ -48,6 +49,7 @@ export default class Exps extends React.Component {
                 <Exp
                     key={exp.hashId}
                     {...exp}
+                    userSkills={this.props.skills}
                 />
             );
         }
