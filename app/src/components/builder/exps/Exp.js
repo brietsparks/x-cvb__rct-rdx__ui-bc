@@ -116,21 +116,23 @@ export default class Exp extends React.Component {
     }
 
     showSkills() {
-        const skills = this.getSkillOptions();
+        const skills = this.getSkillOptions(this.props.userSkills);
 
         return <Select
             name="form-field-name"
             options={skills}
             multi={true}
+            value={this.getSkillOptions(this.props.skills)}
             onChange={this.handleSkillsSelectChange.bind(this)}
         />
     }
 
-    getSkillOptions() {
+    getSkillOptions(skillsArray) {
         let skillOptions = [];
-        
-        if (this.props.userSkills) {
-            skillOptions = this.props.userSkills.map(skill => {
+
+        if (skillsArray) {
+            console.log(skillsArray);
+            skillOptions = skillsArray.map(skill => {
                 return { value: skill.id, label: skill.title}
             });
         }
@@ -139,7 +141,13 @@ export default class Exp extends React.Component {
     }
 
     handleSkillsSelectChange(skillElement) {
-
+        // this.props.dispatch(
+        //     modifyField({
+        //         hashId: this.props.hashId,
+        //         field:  field,
+        //         value:  value
+        //     })
+        // );
     }
 
     showChildren() {

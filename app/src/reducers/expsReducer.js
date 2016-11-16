@@ -154,21 +154,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 
             console.log(parent);
 
-            children.unshift( {
-                children: [],
-                explanation: null,
-                hashId: tempHashId(),
-                id: null,
-                parent_id: parentId,
-                priority: 0,
-                summary: null,
-                title: null,
-                type: null,
-                updated_at: null,
-                created_at: null,
-                user_id: action.payload.user_id,
-
-            });
+            children.unshift(newExp());
 
             newState.exps = exps;
 
@@ -178,7 +164,24 @@ export default function reducer(state = INITIAL_STATE, action) {
     }
 
     return state;
+}
 
+function newExp() {
+    return {
+        children: [],
+        explanation: null,
+        hashId: tempHashId(),
+        id: null,
+        parent_id: parentId,
+        priority: 0,
+        skills: [],
+        summary: null,
+        title: null,
+        type: null,
+        updated_at: null,
+        created_at: null,
+        user_id: action.payload.user_id,
+    }
 }
 
 function findExp(key, exps, keyName) {
