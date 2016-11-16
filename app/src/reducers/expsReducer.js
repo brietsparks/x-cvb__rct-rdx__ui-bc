@@ -149,12 +149,11 @@ export default function reducer(state = INITIAL_STATE, action) {
                 parentId = parent.id;
             } else {
                 children = exps;
-
             }
 
-            console.log(parent);
+            const newExp = newExp(action.payload.user_id, parentId);
 
-            children.unshift(newExp());
+            children.unshift(newExp);
 
             newState.exps = exps;
 
@@ -166,7 +165,8 @@ export default function reducer(state = INITIAL_STATE, action) {
     return state;
 }
 
-function newExp() {
+function newExp(userId, parentId) {
+    parentId = parentId || null;
     return {
         children: [],
         explanation: null,
@@ -180,7 +180,7 @@ function newExp() {
         type: null,
         updated_at: null,
         created_at: null,
-        user_id: action.payload.user_id,
+        user_id: userId
     }
 }
 
