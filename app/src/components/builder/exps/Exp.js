@@ -131,23 +131,25 @@ export default class Exp extends React.Component {
         let skillOptions = [];
 
         if (skillsArray) {
-            console.log(skillsArray);
             skillOptions = skillsArray.map(skill => {
-                return { value: skill.id, label: skill.title}
+                return { ...skill,
+                    value: skill.id,
+                    label: skill.title
+                }
             });
         }
 
         return skillOptions;
     }
 
-    handleSkillsSelectChange(skillElement) {
-        // this.props.dispatch(
-        //     modifyField({
-        //         hashId: this.props.hashId,
-        //         field:  field,
-        //         value:  value
-        //     })
-        // );
+    handleSkillsSelectChange(skills) {
+        this.props.dispatch(
+            modifyField({
+                hashId: this.props.hashId,
+                field:  'skills',
+                value:  skills
+            })
+        );
     }
 
     showChildren() {

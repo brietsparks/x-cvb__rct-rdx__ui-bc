@@ -49,12 +49,18 @@ export default function reducer(state = INITIAL_STATE, action) {
                 fetched: false
             }
         }
+
         case EXP_MODIFY_FIELD: {
             const newState = { ...state };
             const exps = _.cloneDeep(state.exps);
             const exp = findExp(action.payload.hashId, exps);
 
-            exp[action.payload.field] = action.payload.value;
+            if(_.isArray(exp[action.payload.field])) {
+                exp[action.payload.field] = _.cloneDeep(action.payload.value);
+            } else {
+                exp[action.payload.field] = action.payload.value;
+            }
+
             newState.exps = exps;
 
             return newState;
