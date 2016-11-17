@@ -160,6 +160,7 @@ export default class Exp extends React.Component {
                 <Exp
                     key={exp.hashId}
                     dispatch={this.props.dispatch}
+                    userSkills={this.props.userSkills}
                     {...exp}
                 />
             );

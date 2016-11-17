@@ -157,7 +157,23 @@ export default function reducer(state = INITIAL_STATE, action) {
                 children = exps;
             }
 
-            const newExp = newExp(action.payload.user_id, parentId);
+            // todo: why newExp is not defined?
+            // const newExp = newExp(action.payload.user_id, parentId);
+            const newExp = {
+                children: [],
+                explanation: null,
+                hashId: tempHashId(),
+                id: null,
+                parent_id: parentId,
+                priority: 0,
+                skills: [],
+                summary: null,
+                title: null,
+                type: null,
+                updated_at: null,
+                created_at: null,
+                user_id: action.payload.user_id
+            };
 
             children.unshift(newExp);
 
