@@ -36,6 +36,8 @@ export default function reducer(state = INITIAL_STATE, action) {
 
             _.each(exps, exp => addHashIds(exp));
 
+            sortExps(exps);
+
             return {...state,
                 fetching: false,
                 fetched: true,
@@ -157,6 +159,8 @@ export default function reducer(state = INITIAL_STATE, action) {
                 children = exps;
             }
 
+            const nextId = _.first(children).id || null;
+
             // todo: why newExp is not defined?
             // const newExp = newExp(action.payload.user_id, parentId);
             const newExp = {
@@ -165,7 +169,7 @@ export default function reducer(state = INITIAL_STATE, action) {
                 hashId: tempHashId(),
                 id: null,
                 parent_id: parentId,
-                priority: 0,
+                next_id: nextId,
                 skills: [],
                 summary: null,
                 title: null,
@@ -179,31 +183,14 @@ export default function reducer(state = INITIAL_STATE, action) {
 
             newState.exps = exps;
 
+            console.log(newState);
+
             return newState;
 
         }
     }
 
     return state;
-}
-
-function newExp(userId, parentId) {
-    parentId = parentId || null;
-    return {
-        children: [],
-        explanation: null,
-        hashId: tempHashId(),
-        id: null,
-        parent_id: parentId,
-        priority: 0,
-        skills: [],
-        summary: null,
-        title: null,
-        type: null,
-        updated_at: null,
-        created_at: null,
-        user_id: userId
-    }
 }
 
 function findExp(key, exps, keyName) {
@@ -252,4 +239,26 @@ function tempHashId()
         text += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return text;
+}
+
+function sortExps(exps) {
+    const anchor = _.find(exps, exp => exp.next_id === null);
+    anchor.rank = 0;
+
+    setRanks(exps, anchor, anchor.rank);
+
+    _.sortBy(exps, 'rank');
+}
+
+function setRanks(exps, currentExp, rank) {
+    if(currentExp.children && currentExp.children.length > 0) {
+        sortExps(currentExp.children);
+    }
+
+    const prevExp = _.find(exps, exp => exp.next_id === currentExp.id);
+
+    if (prevExp) {
+        prevExp.rank = rank + 1;
+        setRanks(exps, prevExp, prevExp.rank);
+    }
 }
