@@ -1,32 +1,13 @@
 export class SinglyLinkedList {
-    constructor(items, {key = 'id', nextKey = 'next_id'}) {
+    constructor(items, key = 'id', nextKey = 'next_id') {
         this.items = items;
         this.key = key;
         this.nextKey = nextKey;
+        this.list = getLinkedItems(items, key, nextKey);
     }
 
-    sort(items) {
-        const anchor = _.find(items, item => item[this.nextKey] === null);
-
-        anchor.priority = 0;
-
-        this.setPriorities(items, anchor, anchor.priority);
-
-        return _.sortBy(items, 'priority').reverse();
-    }
-
-    setPriorities(items, currentItem, priority) {
-        if(currentItem.children && currentItem.children.length > 0) {
-            currentItem.children = this.sortItems(currentItem.children);
-        }
-
-        const prevItem = _.find(items, item => item[this.nextKey] === currentItem[id]);
-
-        if (prevItem) {
-            prevItem.priority = priority + 1;
-
-            this.setPriorities(items, prevItem, prevItem.priority);
-        }
+    getList() {
+        return this.list;
     }
 
     remove(items, id) {
@@ -63,6 +44,30 @@ export class SinglyLinkedList {
 
         prevItem[nextKey] = item[key];
 
+    }
+}
+
+function getLinkedItems(items, key, nextKey) {
+    const anchor = _.find(items, item => item[nextKey] === null);
+
+    anchor.priority = 0;
+
+    setPriorities(items, anchor, anchor.priority, key, nextKey);
+
+    return _.sortBy(items, 'priority').reverse();
+}
+
+function setPriorities(items, currentItem, priority, key, nextKey) {
+    if(currentItem.children && currentItem.children.length > 0) {
+        currentItem.children = sort(currentItem.children);
+    }
+
+    const prevItem = _.find(items, item => item[nextKey] === currentItem[key]);
+
+    if (prevItem) {
+        prevItem.priority = priority + 1;
+
+        setPriorities(items, prevItem, prevItem.priority, key, nextKey);
     }
 }
 
