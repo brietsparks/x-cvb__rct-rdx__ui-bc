@@ -16,6 +16,7 @@ import 'lodash';
 
 const INITIAL_STATE = {
     exps: [],
+    hasRootEgg: false,
     fetching: false,
     fetched: false,
     error: null,
@@ -32,11 +33,11 @@ export default function reducer(state = INITIAL_STATE, action) {
             }
         }
         case EXPS_FETCH_SUCCESS: {
-            const exps = action.payload;
+            let exps = action.payload;
 
             _.each(exps, exp => addHashIds(exp));
 
-            sortExps(exps);
+            // exps = sortExps(exps);
 
             return {...state,
                 fetching: false,
@@ -86,6 +87,13 @@ export default function reducer(state = INITIAL_STATE, action) {
 
             exp.id = action.payload.id;
             exp.hashId = action.payload.hashId;
+
+            if (exp.parent_id) {
+                let parent = findExp(exp.parent_id, exps, 'id');
+                parent.hasEgg = false;
+            } else {
+                newState.hasRootEgg = false;
+            }
 
             newState.exps = exps;
 
@@ -150,16 +158,18 @@ export default function reducer(state = INITIAL_STATE, action) {
             const hashId = action.payload.hashId;
             if (hashId) {
                 parent = findExp(hashId, exps);
+                parent.hasEgg = true;
                 if (!parent.children) {
                     parent.children = [];
                 }
                 children = parent.children;
                 parentId = parent.id;
             } else {
+                newState.hasRootEgg = true;
                 children = exps;
             }
 
-            const nextId = _.first(children).id || null;
+            const nextId = _.first(children) ? _.first(children).id : null;
 
             // todo: why newExp is not defined?
             // const newExp = newExp(action.payload.user_id, parentId);
@@ -176,14 +186,15 @@ export default function reducer(state = INITIAL_STATE, action) {
                 type: null,
                 updated_at: null,
                 created_at: null,
-                user_id: action.payload.user_id
+                user_id: action.payload.user_id,
+                uncreatedChild: false
             };
 
             children.unshift(newExp);
 
             newState.exps = exps;
 
-            console.log(newState);
+            // console.log(newState);
 
             return newState;
 

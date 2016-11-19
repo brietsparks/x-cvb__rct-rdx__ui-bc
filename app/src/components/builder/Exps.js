@@ -12,6 +12,7 @@ import {
 @connect((store) => {
     return {
         exps: store.exps.exps,
+        hasRootEgg: store.exps.hasRootEgg,
         user: store.auth.user,
         skills: store.skills.skills
     };
@@ -56,9 +57,15 @@ export default class Exps extends React.Component {
     }
 
     showAddExp() {
+        var opts = {};
+        if (this.props.hasRootEgg) {
+            opts['disabled'] = 'disabled';
+        }
+
         return <input
             onClick={ this.addExp.bind(this) }
             type="submit" value="Add"
+            {...opts}
         />
     }
 

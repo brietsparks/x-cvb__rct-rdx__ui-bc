@@ -42,6 +42,7 @@ export function modifyField({ hashId, field, value }) {
 }
 
 export function saveExp({ props }) {
+    // console.log(props);
     if (props.id) {
         return function (dispatch, getState) {
             dispatch({ type: EXP_SAVE });
@@ -54,6 +55,7 @@ export function saveExp({ props }) {
                     }
                 }
             ).then(response => {
+                console.log(response.data);
                 dispatch({type: EXP_SAVE_SUCCESS, payload: {...response.data, hashId: props.hashId}})
             }).catch(err => {
                 dispatch({type: EXP_SAVE_FAILURE, payload: err})
@@ -71,6 +73,7 @@ export function saveExp({ props }) {
                     }
                 }
             ).then(response => {
+                console.log(response);
                 dispatch({type: EXP_SAVE_SUCCESS, payload: {...response.data, hashId: props.hashId}})
             }).catch(err => {
                 dispatch({type: EXP_SAVE_FAILURE, payload: err})
@@ -101,6 +104,14 @@ export function deleteExp({ props }) {
             return dispatch({type: EXP_DELETE_SUCCESS, payload: {hashId: props.hashId}});
         }
     }
+
+}
+
+export function moveUp( { props } ) {
+
+}
+
+export function moveDown( { props } ) {
 
 }
 
