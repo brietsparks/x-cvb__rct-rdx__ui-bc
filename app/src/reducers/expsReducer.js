@@ -9,13 +9,18 @@ import {
     EXP_DELETE,
     EXP_DELETE_SUCCESS,
     EXP_DELETE_FAILURE,
-    EXP_SAVE_FAILURE
+    EXP_SAVE_FAILURE,
+    EXP_MOVE_UP,
+    EXP_MOVE_DOWN
 } from '../actions/types';
+
+import SinglyLinkedList from '../utils/SinglyLinkedList';
 
 import 'lodash';
 
 const INITIAL_STATE = {
     exps: [],
+    hasRootEgg: false,
     fetching: false,
     fetched: false,
     error: null,
@@ -32,9 +37,11 @@ export default function reducer(state = INITIAL_STATE, action) {
             }
         }
         case EXPS_FETCH_SUCCESS: {
-            const exps = action.payload;
+            let exps = action.payload;
 
             _.each(exps, exp => addHashIds(exp));
+
+            exps = sortExps(exps);
 
             return {...state,
                 fetching: false,
@@ -85,6 +92,13 @@ export default function reducer(state = INITIAL_STATE, action) {
             exp.id = action.payload.id;
             exp.hashId = action.payload.hashId;
 
+            if (exp.parent_id) {
+                let parent = findExp(exp.parent_id, exps, 'id');
+                parent.hasEgg = false;
+            } else {
+                newState.hasRootEgg = false;
+            }
+
             newState.exps = exps;
 
             return newState;
@@ -115,12 +129,14 @@ export default function reducer(state = INITIAL_STATE, action) {
             let parentExps;
             let index;
 
+            // get the parent (root or parent exp)
             if (exp.parent_id) {
                 parentExps = findExp(exp.parent_id, exps, 'id').children;
             } else {
                 parentExps = exps;
             }
 
+            // remove the exp from parent
             index = parentExps.indexOf(exp);
             if (index !== -1) {
                 parentExps.splice(index, 1);
@@ -128,6 +144,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 
             newState.exps = exps;
 
+            console.log(newState);
             return newState;
         }
 
@@ -148,14 +165,18 @@ export default function reducer(state = INITIAL_STATE, action) {
             const hashId = action.payload.hashId;
             if (hashId) {
                 parent = findExp(hashId, exps);
+                parent.hasEgg = true;
                 if (!parent.children) {
                     parent.children = [];
                 }
                 children = parent.children;
                 parentId = parent.id;
             } else {
+                newState.hasRootEgg = true;
                 children = exps;
             }
+
+            const nextId = _.first(children) ? _.first(children).id : null;
 
             // todo: why newExp is not defined?
             // const newExp = newExp(action.payload.user_id, parentId);
@@ -165,45 +186,38 @@ export default function reducer(state = INITIAL_STATE, action) {
                 hashId: tempHashId(),
                 id: null,
                 parent_id: parentId,
-                priority: 0,
+                next_id: nextId,
                 skills: [],
                 summary: null,
                 title: null,
                 type: null,
                 updated_at: null,
                 created_at: null,
-                user_id: action.payload.user_id
+                user_id: action.payload.user_id,
+                uncreatedChild: false
             };
 
             children.unshift(newExp);
 
             newState.exps = exps;
 
+            // console.log(newState);
+
             return newState;
 
         }
+
+        case EXP_MOVE_UP: {
+
+        }
+
+        case EXP_MOVE_DOWN: {
+
+        }
+
     }
 
     return state;
-}
-
-function newExp(userId, parentId) {
-    parentId = parentId || null;
-    return {
-        children: [],
-        explanation: null,
-        hashId: tempHashId(),
-        id: null,
-        parent_id: parentId,
-        priority: 0,
-        skills: [],
-        summary: null,
-        title: null,
-        type: null,
-        updated_at: null,
-        created_at: null,
-        user_id: userId
-    }
 }
 
 function findExp(key, exps, keyName) {
@@ -252,4 +266,18 @@ function tempHashId()
         text += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return text;
+}
+
+function sortExps(exps) {
+    const linkedList = new SinglyLinkedList(exps);
+
+    exps = linkedList.getList();
+
+    _.each(exps, exp => {
+        if (exp.children && exp.children.length > 0) {
+            exp.children = sortExps(exp.children);
+        }
+    });
+
+    return exps;
 }

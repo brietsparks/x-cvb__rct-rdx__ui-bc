@@ -11,7 +11,9 @@ import {
     EXP_DELETE,
     EXP_DELETE_SUCCESS,
     EXP_DELETE_FAILURE,
-    EXP_APPEND_NEW_CHILD
+    EXP_APPEND_NEW_CHILD,
+    EXP_MOVE_UP,
+    EXP_MOVE_DOWN
 } from './types';
 import { getDomain } from "utils/app";
 
@@ -42,6 +44,7 @@ export function modifyField({ hashId, field, value }) {
 }
 
 export function saveExp({ props }) {
+    // console.log(props);
     if (props.id) {
         return function (dispatch, getState) {
             dispatch({ type: EXP_SAVE });
@@ -54,6 +57,7 @@ export function saveExp({ props }) {
                     }
                 }
             ).then(response => {
+                console.log(response.data);
                 dispatch({type: EXP_SAVE_SUCCESS, payload: {...response.data, hashId: props.hashId}})
             }).catch(err => {
                 dispatch({type: EXP_SAVE_FAILURE, payload: err})
@@ -71,6 +75,7 @@ export function saveExp({ props }) {
                     }
                 }
             ).then(response => {
+                console.log(response);
                 dispatch({type: EXP_SAVE_SUCCESS, payload: {...response.data, hashId: props.hashId}})
             }).catch(err => {
                 dispatch({type: EXP_SAVE_FAILURE, payload: err})
@@ -102,6 +107,18 @@ export function deleteExp({ props }) {
         }
     }
 
+}
+
+export function moveUp( { props } ) {
+    return function (dispatch) {
+        dispatch({type: EXP_MOVE_UP, payload: { props }});
+    }
+}
+
+export function moveDown( { props } ) {
+    return function (dispatch) {
+        dispatch({type: EXP_MOVE_DOWN, payload: { props }});
+    }
 }
 
 export function appendNewChildExp({ hashId }) {

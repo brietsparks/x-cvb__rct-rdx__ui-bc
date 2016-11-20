@@ -5,6 +5,8 @@ import {
     saveExp,
     deleteExp,
     modifyField,
+    moveUp,
+    moveDown,
     appendNewChildExp
 } from "actions/expActions";
 
@@ -64,7 +66,7 @@ export default class Exp extends React.Component {
                 </div>
 
                 <div>
-
+                    {this.showMove()}
                 </div>
 
                 <div class="exp-children">
@@ -72,6 +74,24 @@ export default class Exp extends React.Component {
                 </div>
             </div>
         );
+    }
+
+    showMove() {
+        if (this.props.id) {
+            return (
+                <div>
+                    <button onClick={this.moveUp.bind(this)}>Move Up</button>
+                    <button onClick={this.moveDown.bind(this)}>Move Down</button>
+                </div>
+            );
+        }
+    }
+    moveUp(e) {
+        this.props.dispatch(moveUp({ props: this.props }))
+    }
+
+    moveDown(e) {
+        this.props.dispatch(moveDown({ props: this.props }))
     }
 
     save(e) {
@@ -84,9 +104,15 @@ export default class Exp extends React.Component {
 
     showAppendNewChild() {
         if (this.props.id) {
+            var opts = {};
+            if (this.props.hasEgg) {
+                opts['disabled'] = 'disabled';
+            }
+
             return <input
                 onClick={ this.appendNewChild.bind(this) }
                 type="submit" value="Add"
+                {...opts}
             />
         }
     }
