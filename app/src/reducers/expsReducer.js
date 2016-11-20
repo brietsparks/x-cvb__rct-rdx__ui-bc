@@ -9,8 +9,12 @@ import {
     EXP_DELETE,
     EXP_DELETE_SUCCESS,
     EXP_DELETE_FAILURE,
-    EXP_SAVE_FAILURE
+    EXP_SAVE_FAILURE,
+    EXP_MOVE_UP,
+    EXP_MOVE_DOWN
 } from '../actions/types';
+
+import SinglyLinkedList from '../utils/SinglyLinkedList';
 
 import 'lodash';
 
@@ -37,7 +41,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 
             _.each(exps, exp => addHashIds(exp));
 
-            // exps = sortExps(exps);
+            exps = sortExps(exps);
 
             return {...state,
                 fetching: false,
@@ -125,12 +129,14 @@ export default function reducer(state = INITIAL_STATE, action) {
             let parentExps;
             let index;
 
+            // get the parent (root or parent exp)
             if (exp.parent_id) {
                 parentExps = findExp(exp.parent_id, exps, 'id').children;
             } else {
                 parentExps = exps;
             }
 
+            // remove the exp from parent
             index = parentExps.indexOf(exp);
             if (index !== -1) {
                 parentExps.splice(index, 1);
@@ -138,6 +144,7 @@ export default function reducer(state = INITIAL_STATE, action) {
 
             newState.exps = exps;
 
+            console.log(newState);
             return newState;
         }
 
@@ -199,6 +206,15 @@ export default function reducer(state = INITIAL_STATE, action) {
             return newState;
 
         }
+
+        case EXP_MOVE_UP: {
+
+        }
+
+        case EXP_MOVE_DOWN: {
+
+        }
+
     }
 
     return state;
@@ -253,23 +269,15 @@ function tempHashId()
 }
 
 function sortExps(exps) {
-    const anchor = _.find(exps, exp => exp.next_id === null);
-    anchor.rank = 0;
+    const linkedList = new SinglyLinkedList(exps);
 
-    setRanks(exps, anchor, anchor.rank);
+    exps = linkedList.getList();
 
-    _.sortBy(exps, 'rank');
-}
+    _.each(exps, exp => {
+        if (exp.children && exp.children.length > 0) {
+            exp.children = sortExps(exp.children);
+        }
+    });
 
-function setRanks(exps, currentExp, rank) {
-    if(currentExp.children && currentExp.children.length > 0) {
-        sortExps(currentExp.children);
-    }
-
-    const prevExp = _.find(exps, exp => exp.next_id === currentExp.id);
-
-    if (prevExp) {
-        prevExp.rank = rank + 1;
-        setRanks(exps, prevExp, prevExp.rank);
-    }
+    return exps;
 }
