@@ -21,6 +21,8 @@ export default class ExpTree {
         } else {
             this.hasRootEgg = false;
         }
+
+        return this;
     }
 
     changeFieldValue(hashId, field, value) {
@@ -31,6 +33,8 @@ export default class ExpTree {
         } else {
             exp[field] = value;
         }
+
+        return this;
     }
 
     appendNew(userId, hashId) {
@@ -65,6 +69,8 @@ export default class ExpTree {
         };
 
         exps.unshift(newExp);
+
+        return this;
     }
 
     remove(hashId) {
@@ -86,18 +92,22 @@ export default class ExpTree {
         if (index !== -1) {
             exps.splice(index, 1);
         }
-    }
 
-    getTree({ sorted = true }) {
-        if (sorted) {
-            this.exps = sortExps(this.exps);
-        }
-
-        return this.exps;
+        return this;
     }
 
     addHashIds() {
         _.each(this.exps, exp => addHashIds(exp));
+
+        return this;
+    }
+
+    getTree(unsorted) {
+        if (!unsorted) {
+            this.exps = sortExps(this.exps);
+        }
+
+        return this.exps;
     }
 
 }
