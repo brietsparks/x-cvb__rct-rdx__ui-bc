@@ -30,11 +30,15 @@ export default class SinglyLinkedList {
 
         this.items = items;
 
-        return item;
+        return {
+            previous: prevItem,
+            removal: item
+        };
     }
 
     insert(item, {before, after}) {
         let insertIndex,
+            nextItem,
             prevItem;
         const items = this.items,
             key = this.key,
@@ -49,7 +53,7 @@ export default class SinglyLinkedList {
         }
 
         if (before) {
-            const nextItem = _.find(items, item => item[key] === before);
+            nextItem = _.find(items, item => item[key] === before);
 
             insertIndex = items.indexOf(nextItem);
 
@@ -69,6 +73,12 @@ export default class SinglyLinkedList {
         }
 
         items.splice(insertIndex, 0, item);
+
+        return {
+            insertion: item,
+            previous: prevItem,
+            next: nextItem
+        }
     }
 }
 
