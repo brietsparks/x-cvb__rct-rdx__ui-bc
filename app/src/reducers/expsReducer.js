@@ -14,10 +14,8 @@ import {
     EXP_MOVE_DOWN
 } from '../actions/types';
 
-import SinglyLinkedList from '../utils/SinglyLinkedList';
-
 import 'lodash';
-import ExpTree from './utils/ExpTree';
+import ExpTree from 'utils/ExpTree';
 
 const INITIAL_STATE = {
     exps: [],
