@@ -1,8 +1,9 @@
 import 'lodash';
 
 export default class SinglyLinkedList {
-    constructor(items, key = 'id', nextKey = 'next_id') {
+    constructor(items, tempKey = 'hashId', key = 'id', nextKey = 'next_id') {
         this.items = items;
+        this.tempKey = tempKey;
         this.key = key;
         this.nextKey = nextKey;
 
@@ -12,19 +13,40 @@ export default class SinglyLinkedList {
         return getLinkedItems(this.items, this.key, this.nextKey);
     }
 
-    remove(id) {
-        const items = this.items,
-            nextKey = this.nextKey,
-            item = _.find(items, item => item[this.key] === id),
-            prevItem = _.find(items, item => item[nextKey] === id);
-
-        if (prevItem) {
-            prevItem[nextKey] = item[nextKey];
+    /**
+     * Remove an item from the list and return any items whose nextKey got updated
+     *
+     * @param keyVal
+     * @param byTempKey if true (default), the item removed by its tempKey value
+     * @return {{previous, removal}}
+     */
+    remove(keyVal, byTempKey) {
+        if (typeof byTempKey === "undefined" || byTempKey === null) {
+            byTempKey = true;
         }
 
-        item[nextKey] = null;
+        // the permanent key
+        const key = this.key;
 
-        const index = items.indexOf(item);
+        // the key by which the removable item will be found, either tempKey or permanent key
+        const removalKey = byTempKey ? this.tempKey : this.key;
+
+        const items = this.items,
+            nextKey = this.nextKey,
+
+            // the item to be removed... its removalKey equals the passed in keyVal
+            removalItem = _.find(items, item => item[removalKey] === keyVal),
+
+            // the one that comes before the removalItem... the one whose nextKey matches the removalItem's key
+            prevItem = _.find(items, item => item[nextKey] === item[key]);
+
+        if (prevItem) {
+            prevItem[nextKey] = removalItem[nextKey]; // closes the gap
+        }
+
+        removalItem[nextKey] = null;
+
+        const index = items.indexOf(removalItem);
 
         items.splice(index, 1);
 
@@ -32,7 +54,7 @@ export default class SinglyLinkedList {
 
         return {
             previous: prevItem,
-            removal: item
+            removal: removalItem
         };
     }
 
