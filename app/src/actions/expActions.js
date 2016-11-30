@@ -16,6 +16,7 @@ import {
     EXP_MOVE_DOWN
 } from './types';
 import { getDomain } from "utils/app";
+import ExpTree from "utils/ExpTree";
 
 const EXPS_URL = getDomain() + "/api/v0/exps";
 
@@ -44,7 +45,6 @@ export function modifyField({ hashId, field, value }) {
 }
 
 export function saveExp({ props }) {
-    // console.log(props);
     if (props.id) {
         return function (dispatch, getState) {
             dispatch({ type: EXP_SAVE });
@@ -87,6 +87,15 @@ export function saveExp({ props }) {
 export function deleteExp({ props }) {
     if (props.id) {
         return function (dispatch, getState) {
+            const state = getState()
+
+            const tree = new ExpTree(state.exps.exps, state.exps.hasRootEgg);
+
+            const results = tree.remove(props.hashId);
+
+            console.log(results);
+            return;
+
             dispatch({ type: EXP_DELETE });
             axios.delete(
                 EXPS_URL + "/" + props.id,

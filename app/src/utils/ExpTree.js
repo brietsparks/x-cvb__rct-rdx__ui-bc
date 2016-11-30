@@ -1,6 +1,6 @@
 import 'lodash';
 
-import SinglyLinkedList from '../../utils/SinglyLinkedList';
+import SinglyLinkedList from './SinglyLinkedList';
 
 export default class ExpTree {
 
@@ -65,7 +65,8 @@ export default class ExpTree {
         const newExp = {...newExp,
             parent_id: parentId,
             next_id: nextId,
-            user_id: userId
+            user_id: userId,
+            hashId: tempHashId()
         };
 
         exps.unshift(newExp);
@@ -178,7 +179,7 @@ function tempHashId()
 const newExp = {
     children: [],
     explanation: null,
-    hashId: tempHashId(),
+    hashId: null,
     id: null,
     parent_id: null,
     next_id: null,
